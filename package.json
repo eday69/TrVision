@@ -1,0 +1,15 @@
+{
+  "name": "trvision-app",
+  "version": "1.0.0",
+  "description": "twitter trends analytics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "trends",
+    "analytics"
+  ],
+  "author": "Eric Day",
+  "license": "MIT"
+}
