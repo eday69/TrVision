@@ -11,5 +11,8 @@
     "analytics"
   ],
   "author": "Eric Day",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  }
 }
