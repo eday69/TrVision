@@ -1,6 +1,9 @@
 var http = require('http');  // is this not contained in previous line?
-var express = require('express');
-var pug = require('pug');
+var express = require("express");
+var port = 3700;
+
+//var app = express.createServer();
+//var geohash = require("geohash").GeoHash;
 const path = require('path');
 
 /// Special section to work through proxy servers
@@ -126,19 +129,16 @@ callback(s);
 };
 // end of special section
 
-
 // var https = require('https');
 var agent = new httpsProxyAgent({
     proxyHost: '192.168.0.84',
     proxyPort: 3128
 });
 
-
 var headers = {
 	'User-Agent': 'Coding Defined',
 	Authorization: 'Bearer ' + require('./oauth.json').access_token
 };
-
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
@@ -157,24 +157,30 @@ if(!err) {
 }
 });
 
-function browsename(con, cb)
+function getplacefortrend(con, trendid, cb)
 {
     var json = '';
-    con.query('SELECT name from user', function(err, results, fields) {
+    con.query('select distinct place, count(*) as times from tweets where place is not null and trend_id = '+trendid+' group by place;',
+           function(err, results, fields) {
        if (err)
-           return callback(err, null);
-       console.log('The query-result is: ', results[0]);
+           return cb(err, null);
        json = JSON.stringify(results);
 
-       console.log('JSON-result:', json);
+//       console.log('JSON-result:', json);
        cb(null, json);
   });
 }
-
-
-
-
-
+function getalltrends(con, cb)
+{
+    var json = '';
+    con.query('select idtrends, name from trends;', function(err, results, fields) {
+       if (err)
+           return cb(err, null);
+       json = JSON.stringify(results);
+//       console.log('JSON-result:', json);
+       cb(null, json);
+  });
+}
 
 function instrend(con, newtrend, cb)
 {
@@ -335,8 +341,10 @@ var contador=0;
 
 var newtrend={};
 var newtweet={};
-//setInterval(function(){
+
+setInterval(function(){
   // here we call the twitter
+  console.log('Getting more tweets...');
 	callTwitter(trendOptions, function(trendsArray){
 	  ++calls;
 	  trendsArray.forEach(function(trends){
@@ -354,17 +362,7 @@ var newtweet={};
 		});
 	});
 
-//},3000);  // we wait five minutes before calling again
-
-
-
-
-
-
-
-
-
-
+},300000);  // we wait five minutes before calling again
 
 
 var app = express();
@@ -375,24 +373,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set pug as view engine
 app.set('view engine', 'pug');
 
-app.get('/', function (req, res) {
-  res.render('index', { title: 'Hey', message: 'TrVision app?!' })
-});
+// new key AIzaSyCSSgWCkCjjdcLjw2LR9Mwgaq1dmOSEyGc
+// old key AIzaSyD4wbUCSUSlUFexumtmQWdwiSSfLS1XQ14
+// route routing is very easy with express, this will handle the request for root directory contents.
+// :id is used here to pattern match with the first value after the forward slash.
 
 
-var googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyD4wbUCSUSlUFexumtmQWdwiSSfLS1XQ14'
-});
+app.get("/",function (req,res)
+    {
+                // now we use the templating capabilities of express and call our template to render the view, and pass a few parameters to it
+        res.render( "maprender", { layout: false, lat:0, lon:0, zoom:2, geohash:req.params["id"]});
+    });
 
-// Geocode an address.
-googleMapsClient.geocode({
-  address: '1600 Amphitheatre Parkway, Mountain View, CA'
-}, function(err, response) {
-  if (!err) {
-    console.log(response.json.results);
-  }
-});
+    var io = require('socket.io').listen(app.listen(port));
+    io.sockets.on('connection', function (socket) {
+       var trendid;
+       var trends;
 
-// now that we have our twitter call in the background, we can deal with clients (users)
-app.listen(2700);
-console.log('We are now listening to port 2700');
+       // for a certian trend id, get places (address)
+       socket.on('place', function (trendid) {
+         console.log('Searching for trendid: '+trendid);
+         getplacefortrend(connection, trendid, function(err, address) {
+               if (err) return console.error(err);
+               socket.emit('place', address);
+         });
+       });
+
+       // load all trends in DB
+       getalltrends(connection, function(err, trends){
+         if (err) return console.error(err);
+         socket.emit('alltrends', trends);
+       });
+
+    });
