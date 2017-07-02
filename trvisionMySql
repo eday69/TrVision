@@ -1,0 +1,93 @@
+CREATE DATABASE `trvision` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+CREATE TABLE `trends` (
+  `idtrends` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `query` varchar(255) DEFAULT NULL,
+  `tweet_volume` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_seen` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`idtrends`)
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tweets` (
+  `id_str` varchar(55) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  `place` varchar(100) DEFAULT NULL,
+  `lang` varchar(10) DEFAULT NULL,
+  `trend_id` varchar(55) DEFAULT NULL,
+  `usr_id_str` varchar(55) DEFAULT NULL,
+  PRIMARY KEY (`id_str`),
+  UNIQUE KEY `id_str_UNIQUE` (`id_str`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+  `id_str` varchar(55) NOT NULL,
+  `screen_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id_str`),
+  UNIQUE KEY `id_str_UNIQUE` (`id_str`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `trend_ins`(IN trname varchar(255),
+ IN trquery varchar(255),
+ IN trtweet_volume integer,
+ OUT trendid int)
+BEGIN
+  DECLARE tempid INT;
+
+  SELECT idtrends FROM trends
+  WHERE name = trname
+  INTO tempid;
+
+  IF tempid is null THEN
+    INSERT INTO trends(name, query, tweet_volume)
+    VALUES(trname, trquery, trtweet_volume);
+    SELECT LAST_INSERT_ID() into trendid;
+  ELSE
+    SET trendid = tempid;
+  END IF;
+
+  UPDATE trends
+  SET last_seen = CURRENT_TIMESTAMP
+  WHERE idtrends = tempid;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tweet_ins`(
+ IN tw_id_str varchar(55),
+ IN tw_created_at datetime,
+ IN tw_text varchar(255),
+ IN tw_place varchar(100),
+ IN tw_lang varchar(10),
+ IN trend_id varchar(55),
+ IN tw_usr_screen_name varchar(100),
+ IN tw_usr_id_str varchar(55))
+BEGIN
+  DECLARE tempid varchar(55);
+
+  -- Need to check if this user exists in table
+  SELECT id_str FROM users
+  WHERE id_str = tw_usr_id_str
+  INTO tempid;
+
+  -- No? then insert record
+  IF (tempid is NULL) THEN
+    INSERT INTO users
+    VALUES(tw_usr_id_str, tw_usr_screen_name);
+  END IF;
+
+  -- Now, need to check if this tweet in tweet table, just in case
+  SELECT id_str FROM tweets
+  WHERE id_str = tw_id_str;
+
+  IF (tempid is NULL) THEN
+    INSERT INTO tweets
+    VALUES(tw_id_str, tw_created_at, tw_text, tw_place,
+           tw_lang, trend_id, tw_usr_id_str);
+  END IF;
+END$$
+DELIMITER ;
