@@ -1,9 +1,6 @@
 var http = require('http');  // is this not contained in previous line?
 var express = require("express");
 var port = 3700;
-
-//var app = express.createServer();
-//var geohash = require("geohash").GeoHash;
 const path = require('path');
 
 /// Special section to work through proxy servers
@@ -140,15 +137,17 @@ var headers = {
 	Authorization: 'Bearer ' + require('./oauth.json').access_token
 };
 
+// mysql credentials, use your own credentials here.
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'root',  // aws aws17Sql69
+  password : 'root',
   database : 'trvision',
   multipleStatements: true
 });
 
+// open connection to mysql
 connection.connect(function(err){
 if(!err) {
     console.log("Database is connected ... nn");
@@ -157,6 +156,7 @@ if(!err) {
 }
 });
 
+// query to get places for a particular trend id
 function getplacefortrend(con, trendid, cb)
 {
     var json = '';
@@ -170,6 +170,8 @@ function getplacefortrend(con, trendid, cb)
        cb(null, json);
   });
 }
+
+// query to get all trends
 function getalltrends(con, cb)
 {
     var json = '';
@@ -182,6 +184,7 @@ function getalltrends(con, cb)
   });
 }
 
+//query to insert a trend, it will return a trendid. If already exists, will return trend id on table.
 function instrend(con, newtrend, cb)
 {
 //  var usuario = { name: newuser };
@@ -205,6 +208,7 @@ function instrend(con, newtrend, cb)
   });
 }
 
+// query to insert a new tweet, for a particular trend id
 function instweet(con, newtweet, cb)
 {
 //  var usuario = { name: newuser };
@@ -224,6 +228,7 @@ function instweet(con, newtweet, cb)
   });
 }
 
+// call twitter api
 function callTwitter(options, callback){
 	https.get(options, function(response) {
 		jsonHandler(response, callback);
@@ -232,6 +237,7 @@ function callTwitter(options, callback){
 	})
 }
 
+// twitter trend options (dont use agent if not behing proxy)
 var trendOptions = {
 	host: 'api.twitter.com',
 	path: '/1.1/trends/place.json?id=1', // id = 1 for global trends
@@ -239,6 +245,7 @@ var trendOptions = {
 	agent: agent
 }
 
+// twitter details options (dont use agent if not behing proxy)
 var tweetDetails = {
 	maxResults: 250,
 	max_id: null,
@@ -277,6 +284,7 @@ function fullTweetPath(query) {
 	tweetDetails.options.path = path;
 }
 
+// convert twitter id (very large number) to str
 function decStrNum (n) {
     n = n.toString();
     var result=n;
@@ -294,6 +302,8 @@ function decStrNum (n) {
     return result;
 }
 
+// getMoreTweets will get the tweets of a particular trendid by blocks of maxResults (tweetDetails options)
+// it will insert the tweet in the DB and continue until last tweet from trend is downloaded
 var getMoreTweets = function(query, trendid){
 	var myplace=null;
 	fullTweetPath(query);
@@ -342,6 +352,9 @@ var contador=0;
 var newtrend={};
 var newtweet={};
 
+// main starting point of program
+// setInterval is set to cycle every 5 min (300,000 milliseconds)
+// it will read the trends, and for every trend, call getMoreTweets to get the tweets themselves.
 setInterval(function(){
   // here we call the twitter
   console.log('Getting more tweets...');
@@ -373,18 +386,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set pug as view engine
 app.set('view engine', 'pug');
 
-// new key AIzaSyCSSgWCkCjjdcLjw2LR9Mwgaq1dmOSEyGc
-// old key AIzaSyD4wbUCSUSlUFexumtmQWdwiSSfLS1XQ14
-// route routing is very easy with express, this will handle the request for root directory contents.
-// :id is used here to pattern match with the first value after the forward slash.
-
-
+// inicial render of page by express
 app.get("/",function (req,res)
     {
-                // now we use the templating capabilities of express and call our template to render the view, and pass a few parameters to it
+       // now we use the templating capabilities of express and call our template to render the view, and pass a few parameters to it
         res.render( "maprender", { layout: false, lat:0, lon:0, zoom:2, geohash:req.params["id"]});
     });
 
+    // open sockets
     var io = require('socket.io').listen(app.listen(port));
     io.sockets.on('connection', function (socket) {
        var trendid;
