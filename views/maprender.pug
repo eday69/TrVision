@@ -1,0 +1,14 @@
+head
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCSSgWCkCjjdcLjw2LR9Mwgaq1dmOSEyGc')
+  script(src='/mapshow.js')
+  script(src='/socket.io/socket.io.js')
+  link(rel='stylesheet', href='/styles.css')
+  title="TrVision"
+body
+  h1= message
+
+  div.trends#trendcontainer
+    h1.trendtitle Trends
+    div.trendsinfo#trendlist
+    ul
+  div.map#map Our Map

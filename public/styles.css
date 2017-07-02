@@ -1,0 +1,30 @@
+
+.trends {
+  float: left;
+  width: 20%;
+  margin: 1%;
+  padding: 1%;
+  border: 1px solid black;
+}
+.trendsinfo {
+  color: black;
+  font-weight: bold;
+}
+a:hover {
+  color: red;
+}
+.map {
+  float: left;
+  width: 71%;
+  height: 93%;
+  margin: 1%;
+  padding: 1%;
+}
+
+/*
+   . period is class
+   # is ID
+   */
+
+div {
+}

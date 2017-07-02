@@ -13,6 +13,13 @@
   "author": "Eric Day",
   "license": "MIT",
   "dependencies": {
+    "@google/maps": "^0.4.1",
+    "express": "^4.15.3",
+    "google-maps": "^3.2.1",
+    "mysql": "^2.13.0",
+    "pug": "^2.0.0-rc.2",
+    "socket.io": "^2.0.3",
     "twitter": "^1.7.1"
-  }
+  },
+  "devDependencies": {}
 }
