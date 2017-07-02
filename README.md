@@ -2,6 +2,7 @@
 Twitter location map viewer
 
 This is my first node.js app. Probably rusty in many points, but ... it works !
+I've used node.js (of course), express as frame work, pug as template engine, socket.io (bi-directional comunicator event-based), and mysl as db. On the client side we are using the google api for map & markers rendering.
 
 First thing is you need is a consumer & secret key from twitter app. Go to developer.twitter.com to get your own. 
 Insert values in autorization.js file and run it from command line (node autorization.js). It should create oauth.json file on root directory.
