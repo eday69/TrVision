@@ -42,7 +42,8 @@ window.onload = function() {
           trends.forEach(function(trend){
             var html = '';
 //            console.log(place.place);
-            html = "<div><a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>" + trend.name + "</a></div>";
+            html = "<div><a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>("+
+            trend.days+") " + trend.name + "</a></div>";
             trendlist.insertAdjacentHTML('beforeend', html);
           });
         });

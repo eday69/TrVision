@@ -175,7 +175,10 @@ function getplacefortrend(con, trendid, cb)
 function getalltrends(con, cb)
 {
     var json = '';
-    con.query('select idtrends, name from trends;', function(err, results, fields) {
+    var qry="select idtrends, name, datediff(current_timestamp, created_at) as days "+
+             "from trends "+
+             "order by 3, 2;";
+    con.query(qry, function(err, results, fields) {
        if (err)
            return cb(err, null);
        json = JSON.stringify(results);
