@@ -13,4 +13,4 @@ My office is behind a proxy server, so had to go around that. If you do not have
 // Special section to work through proxy servers
 all the way to this other comment:
 // end of special section
-Its about 120 lines of code, from here: <script src="https://gist.github.com/matthias-christen/6beb3b4dda26bd6a221d.js"></script>
+Its about 120 lines of code, from here: https://gist.github.com/matthias-christen/6beb3b4dda26bd6a221d
