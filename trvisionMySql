@@ -103,7 +103,7 @@ BEGIN
 
   IF (tempid is NULL) THEN
     INSERT INTO tweets
-    VALUES(tw_id_str, tw_created_at, tw_text, tw_place,
+    VALUES(tw_id_str, tdate, tw_text, tw_place,
            tw_lang, trend_id, tw_usr_id_str);
   END IF;
 END$$
