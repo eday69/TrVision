@@ -326,7 +326,7 @@ var getMoreTweets = function(query, trendid){
 						"geo":tweet.geo,
 						"geo_enabled":tweet.geo_enabled,
 */
-					newtweet=[tweet.id_str, tweet.created_at,
+					newtweet=[tweet.id_str, Date(tweet.created_at),
 										tweet.text, myplace, tweet.lang,
 										trendid,
 										tweet.user.screen_name, tweet.user.id_str];
