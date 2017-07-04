@@ -360,7 +360,7 @@ var newtweet={};
 // it will read the trends, and for every trend, call getMoreTweets to get the tweets themselves.
 setInterval(function(){
   // here we call the twitter
-  console.log('Getting more tweets...');
+  console.log('Getting trends...call #'+(calls+1));
 	callTwitter(trendOptions, function(trendsArray){
 	  ++calls;
 	  trendsArray.forEach(function(trends){
@@ -368,10 +368,12 @@ setInterval(function(){
 
 		  srchtrend.forEach(function(trend){
 				newtrend = [trend.name, trend.query, trend.tweet_volume];
+        console.log('Inserting trend');
 				instrend(connection, newtrend, function(err, trendid){
 					// when we insert the trend in the db, we return an id for it. If it already exists, we return its previously created id.
 					contador=0;
 //					console.log('New trend id : '+ trendid);
+          console.log('Now getting tweets for each trend (trendid '+trendid+')');
 					getMoreTweets(trend.query, trendid);
 				});
 			});
