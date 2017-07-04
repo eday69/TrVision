@@ -144,7 +144,6 @@ var connection = mysql.createConnection({
   user     : 'root',
   password : 'root',
   database : 'trvision',
-  charset  : 'utf8mb4',
   multipleStatements: true
 });
 
