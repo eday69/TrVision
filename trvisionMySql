@@ -5,7 +5,7 @@ CREATE DATABASE `trvision` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
 USE trvision;
 
-drop table trends;
+DROP TABLE IF EXISTS trends;
 
 CREATE TABLE `trends` (
   `idtrends` int(11) NOT NULL AUTO_INCREMENT,
@@ -17,7 +17,7 @@ CREATE TABLE `trends` (
   PRIMARY KEY (`idtrends`)
 ) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8;
 
-drop table tweets;
+DROP TABLE IF EXISTS tweets;
 
 CREATE TABLE `tweets` (
   `id_str` varchar(55) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `tweets` (
   UNIQUE KEY `id_str_UNIQUE` (`id_str`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-drop table users;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE `users` (
   `id_str` varchar(55) NOT NULL,
