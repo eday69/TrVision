@@ -1,4 +1,8 @@
-CREATE DATABASE `trvision` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+DROP DATABASE IF EXISTS trvision;
+CREATE DATABASE `trvision` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+
+drop table trends;
 
 CREATE TABLE `trends` (
   `idtrends` int(11) NOT NULL AUTO_INCREMENT,
@@ -10,10 +14,12 @@ CREATE TABLE `trends` (
   PRIMARY KEY (`idtrends`)
 ) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8;
 
+drop table tweets;
+
 CREATE TABLE `tweets` (
   `id_str` varchar(55) NOT NULL,
   `created_at` datetime DEFAULT NULL,
-  `text` varchar(255) DEFAULT NULL,
+  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `place` varchar(100) DEFAULT NULL,
   `lang` varchar(10) DEFAULT NULL,
   `trend_id` varchar(55) DEFAULT NULL,
@@ -22,6 +28,8 @@ CREATE TABLE `tweets` (
   UNIQUE KEY `id_str_UNIQUE` (`id_str`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+drop table users;
+
 CREATE TABLE `users` (
   `id_str` varchar(55) NOT NULL,
   `screen_name` varchar(100) DEFAULT NULL,
@@ -29,6 +37,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `id_str_UNIQUE` (`id_str`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+drop procedure trend_ins;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `trend_ins`(IN trname varchar(255),
@@ -56,10 +65,12 @@ BEGIN
 END$$
 DELIMITER ;
 
+drop procedure tweet_ins;
+
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tweet_ins`(
  IN tw_id_str varchar(55),
- IN tw_created_at datetime,
+ IN tw_created_at varchar(50),
  IN tw_text varchar(255),
  IN tw_place varchar(100),
  IN tw_lang varchar(10),
@@ -68,6 +79,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `tweet_ins`(
  IN tw_usr_id_str varchar(55))
 BEGIN
   DECLARE tempid varchar(55);
+  DECLARE tdate datetime;
+
+  SET tdate = STR_TO_DATE(substring(tw_created_at,5,20),'%b %d %Y %T');
 
   -- Need to check if this user exists in table
   SELECT id_str FROM users
