@@ -221,6 +221,7 @@ function instweet(con, newtweet, cb)
   con.query(sql_stmt, function(err, res){
     if(err)
 		{
+      console.log(sql_stmt);
 			console.log('err: '+JSON.stringify(err, null, 2));
 			cb(err);
 		}
