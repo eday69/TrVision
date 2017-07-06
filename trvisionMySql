@@ -44,7 +44,7 @@ DROP PROCEDURE IF EXISTS trend_ins;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `trend_ins`(IN trname varchar(255),
- IN trquery varchar(255) COLLATE utf8mb4_unicode_ci,
+ IN trquery varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
  IN trtweet_volume integer,
  OUT trendid int)
 BEGIN
@@ -108,3 +108,21 @@ BEGIN
   END IF;
 END$$
 DELIMITER ;
+
+
+ALTER DATABASE trvision CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+# For each table:
+
+use trvision;
+
+ALTER TABLE trends CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE tweets CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+# For each column:
+ALTER TABLE tweets
+CHANGE text text VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ ALTER TABLE users
+CHANGE screen_name screen_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
