@@ -44,8 +44,8 @@ DROP PROCEDURE IF EXISTS trend_ins;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `trend_ins`(
- IN trname  varchar(255) COLLATE utf8_unicode_ci,
- IN trquery varchar(255) COLLATE utf8_unicode_ci,
+ IN trname  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci,
+ IN trquery varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci,
  IN trtweet_volume integer,
  OUT trendid int)
 BEGIN
