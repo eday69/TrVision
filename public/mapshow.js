@@ -6,7 +6,7 @@ var socket;
 
 window.onload = function() {
 
-        socket = io.connect('http://http://ec2-54-245-47-49.us-west-2.compute.amazonaws.com:3700/');
+        socket = io.connect('http://ec2-54-245-47-49.us-west-2.compute.amazonaws.com:3700/');
         geocoder = new google.maps.Geocoder();
         var gdl = new google.maps.LatLng(20.6674862, -103.3991778);
         map = new google.maps.Map(document.getElementById('map'), {
