@@ -308,8 +308,9 @@ function decStrNum (n) {
 
 // getMoreTweets will get the tweets of a particular trendid by blocks of maxResults (tweetDetails options)
 // it will insert the tweet in the DB and continue until last tweet from trend is downloaded
-var getMoreTweets = function(query, trendid){
+var getMoreTweets = function(query, this_trendid){
 	var myplace=null;
+  console.log('getting tweets for trend: '+this_trendid);
 	fullTweetPath(query);
 	callTwitter(tweetDetails.options, function(tweetObj) {
 //			console.log(JSON.stringify(tweetObj.search_metadata, null, 2));
@@ -328,7 +329,7 @@ var getMoreTweets = function(query, trendid){
 */
 					newtweet=[tweet.id_str, Date(tweet.created_at),
 										tweet.text, myplace, tweet.lang,
-										trendid,
+										this_trendid,
 										tweet.user.screen_name, tweet.user.id_str];
 //					console.log(JSON.stringify(newtweet, null, 2));
 				instweet(connection, newtweet, function(err){
