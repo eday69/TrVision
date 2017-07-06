@@ -144,7 +144,8 @@ var connection = mysql.createConnection({
   user     : 'root',
   password : 'aws17Sql69',
   database : 'trvision',
-  multipleStatements: true
+  multipleStatements: true,
+  charset: "utf8mb4"
 });
 
 // open connection to mysql
