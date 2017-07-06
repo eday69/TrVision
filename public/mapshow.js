@@ -43,7 +43,7 @@ window.onload = function() {
             var html = '';
 //            console.log(place.place);
             html = "<div><a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>("+
-            trends.thours+' hours) ['+trend.tdays+"]age " + trend.name + "</a></div>";
+            trend.thours+' hours) ['+trend.tdays+"]age " + trend.name + "</a></div>";
             trendlist.insertAdjacentHTML('beforeend', html);
           });
         });
