@@ -73,14 +73,14 @@ DROP PROCEDURE IF EXISTS tweet_ins;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tweet_ins`(
- IN tw_id_str varchar(55),
- IN tw_created_at varchar(50),
+ IN tw_id_str varchar(55)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+ IN tw_created_at varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
  IN tw_text varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
- IN tw_place varchar(100),
- IN tw_lang varchar(10),
- IN trend_id varchar(55),
+ IN tw_place varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+ IN tw_lang varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+ IN trend_id varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
  IN tw_usr_screen_name varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
- IN tw_usr_id_str varchar(55))
+ IN tw_usr_id_str varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci)
 BEGIN
   DECLARE tempid varchar(55);
   DECLARE tdate datetime;

@@ -195,7 +195,6 @@ function instrend(con, newtrend, cb)
 //	"INSERT INTO trends SET name=?, query=?, tweet_volume=? ";
   sql_stmt = mysql.format(sql_stmt, newtrend);
 //	console.log('stmt: '+JSON.stringify(newtrend, null, 2));
-  console.log('Trend : ' + sql_stmt);
 
   con.query(sql_stmt, function(err, res){
     if(err)
@@ -207,7 +206,6 @@ function instrend(con, newtrend, cb)
     else
 		{
 //  		console.log('Last insert ID:', res[2][0].trendid);
-      console.log('Trend id created: '+res[2][0].trendid);
 		  cb(null, res[2][0].trendid);
 		}
   });
@@ -372,12 +370,10 @@ setInterval(function(){
 
 		  srchtrend.forEach(function(trend){
 				newtrend = [trend.name, trend.query, trend.tweet_volume];
-        console.log('Inserting trend');
 				instrend(connection, newtrend, function(err, trendid){
 					// when we insert the trend in the db, we return an id for it. If it already exists, we return its previously created id.
 					contador=0;
 //					console.log('New trend id : '+ trendid);
-          console.log('Now getting tweets for each trend (trendid '+trendid+')');
 					getMoreTweets(trend.query, trendid);
 				});
 			});
