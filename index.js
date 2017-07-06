@@ -206,6 +206,7 @@ function instrend(con, newtrend, cb)
     else
 		{
 //  		console.log('Last insert ID:', res[2][0].trendid);
+      console.log('Trend id created: '+res[2][0].trendid);
 		  cb(null, res[2][0].trendid);
 		}
   });
