@@ -177,8 +177,9 @@ function getalltrends(con, cb)
 {
     var json = '';
     var qry="select idtrends, name, datediff(current_timestamp, created_at) as days "+
+                   " hour(timediff(last_seen, created_at)) as hour"+
              "from trends "+
-             "order by 3, 2;";
+             "order by 4 desc, 3 desc, 2 asc;";
     con.query(qry, function(err, results, fields) {
        if (err)
            return cb(err, null);
