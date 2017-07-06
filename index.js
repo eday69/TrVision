@@ -195,7 +195,7 @@ function instrend(con, newtrend, cb)
 //	"INSERT INTO trends SET name=?, query=?, tweet_volume=? ";
   sql_stmt = mysql.format(sql_stmt, newtrend);
 //	console.log('stmt: '+JSON.stringify(newtrend, null, 2));
-  console.log('Trend : ' sql_stmt);
+  console.log('Trend : ' + sql_stmt);
 
   con.query(sql_stmt, function(err, res){
     if(err)
