@@ -176,7 +176,7 @@ function getplacefortrend(con, trendid, cb)
 function getalltrends(con, cb)
 {
     var json = '';
-    var qry="select idtrends, name, datediff(current_timestamp, created_at) as tdays "+
+    var qry="select idtrends, name, datediff(current_timestamp, created_at) as tdays, "+
                    " hour(timediff(last_seen, created_at)) as thours "+
              "from trends "+
              "order by 4 desc, 3 desc, 2 asc;";
