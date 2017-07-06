@@ -43,8 +43,9 @@ CREATE TABLE `users` (
 DROP PROCEDURE IF EXISTS trend_ins;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `trend_ins`(IN trname varchar(255),
- IN trquery varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `trend_ins`(
+ IN trname  varchar(255) CHARACTER SET utf8mb4,
+ IN trquery varchar(255) CHARACTER SET utf8mb4,
  IN trtweet_volume integer,
  OUT trendid int)
 BEGIN
