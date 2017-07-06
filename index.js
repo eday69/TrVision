@@ -199,7 +199,7 @@ function instrend(con, newtrend, cb)
   con.query(sql_stmt, function(err, res){
     if(err)
 		{
-    	console.log('User already in DB');
+    	console.log('Trend already in DB');
 			console.log('err: '+JSON.stringify(err, null, 2));
 			cb(err, null);
 		}
