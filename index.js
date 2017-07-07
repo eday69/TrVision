@@ -142,7 +142,8 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'aws17Sql69',
+//  password : 'aws17Sql69',
+  password : 'root',
   database : 'trvision',
   multipleStatements: true,
   charset: "utf8mb4"
@@ -247,9 +248,8 @@ function callTwitter(options, callback){
 var trendOptions = {
 	host: 'api.twitter.com',
 	path: '/1.1/trends/place.json?id=1', // id = 1 for global trends
-	headers: headers /*,
-	agent: agent */
-}
+	headers: headers,
+	agent: agent }
 
 // twitter details options (dont use agent if not behing proxy)
 var tweetDetails = {
@@ -259,8 +259,8 @@ var tweetDetails = {
 	resultType: 'recent', // options are mixed, popular and recent
 	options: {
 		host: 'api.twitter.com',
-		headers: headers /*,
-    agent: agent*/
+		headers: headers ,
+    agent: agent
 	}
 }
 
@@ -366,6 +366,7 @@ setInterval(function(){
   // here we call the twitter
   console.log('Getting trends...call #'+(calls+1));
 	callTwitter(trendOptions, function(trendsArray){
+//    console.log('Got trends, now process them.');
 	  ++calls;
 	  trendsArray.forEach(function(trends){
 		  var srchtrend=trends.trends;
@@ -375,7 +376,7 @@ setInterval(function(){
 				instrend(connection, newtrend, function(err, trendid){
 					// when we insert the trend in the db, we return an id for it. If it already exists, we return its previously created id.
 					contador=0;
-//					console.log('New trend id : '+ trendid);
+					console.log('New trend id : '+ trendid);
 					getMoreTweets(trend.query, trendid);
 				});
 			});

@@ -6,7 +6,8 @@ var socket;
 
 window.onload = function() {
 
-        socket = io.connect('http://ec2-54-245-47-49.us-west-2.compute.amazonaws.com:3700/');
+//        socket = io.connect('http://ec2-54-245-47-49.us-west-2.compute.amazonaws.com:3700/');
+        socket = io.connect('localhost:3700/');
         geocoder = new google.maps.Geocoder();
         var gdl = new google.maps.LatLng(20.6674862, -103.3991778);
         map = new google.maps.Map(document.getElementById('map'), {
@@ -42,8 +43,10 @@ window.onload = function() {
           trends.forEach(function(trend){
             var html = '';
 //            console.log(place.place);
-            html = "<div><a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>("+
-            trend.thours+' hours) ['+trend.tdays+"]age " + trend.name + "</a></div>";
+            html = "<div>";
+            html += "<div class='trendday'>("+trend.thours+" hours)  ["+trend.tdays+" days] age</div>";
+            html += "<a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>" + trend.name + "</a>";
+            html += "</div>"
             trendlist.insertAdjacentHTML('beforeend', html);
           });
         });
