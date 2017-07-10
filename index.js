@@ -248,8 +248,8 @@ function callTwitter(options, callback){
 var trendOptions = {
 	host: 'api.twitter.com',
 	path: '/1.1/trends/place.json?id=1', // id = 1 for global trends
-	headers: headers,
-	agent: agent }
+	headers: headers/*,
+	agent: agent */}
 
 // twitter details options (dont use agent if not behing proxy)
 var tweetDetails = {
@@ -259,8 +259,8 @@ var tweetDetails = {
 	resultType: 'recent', // options are mixed, popular and recent
 	options: {
 		host: 'api.twitter.com',
-		headers: headers ,
-    agent: agent
+		headers: headers /*,
+    agent: agent*/
 	}
 }
 

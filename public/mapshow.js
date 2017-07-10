@@ -44,7 +44,7 @@ window.onload = function() {
             var html = '';
 //            console.log(place.place);
             html = "<div>";
-            html += "<div class='trendday'>("+trend.thours+" hours)  ["+trend.tdays+" days] age</div>";
+            html += "<div class='trendday'>("+trend.thours+" hours)  ["+trend.tdays+" days age]</div>";
             html += "<a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>" + trend.name + "</a>";
             html += "</div>"
             trendlist.insertAdjacentHTML('beforeend', html);
@@ -85,7 +85,7 @@ function codeAddress(newaddress, times) {
      map.setCenter(results[0].geometry.location);
      var marker = new google.maps.Marker({
          label: times.toString(),
-         title: times.toString()+' tweets!',
+         title: times.toString()+' tweets! ('+newaddress+')',
          map: map,
          position: results[0].geometry.location
      });

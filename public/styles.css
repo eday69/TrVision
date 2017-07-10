@@ -3,7 +3,7 @@
   float: left;
   width: 20%;
   margin: 1%;
-  padding: 1%;
+/*  padding: 1%; */
   border: 1px solid black;
 
 }
@@ -29,14 +29,5 @@ a:hover {
 }
 .trendhour {
   font-size: x-small;
-  color:blue;
-}
-
-
-/*
-   . period is class
-   # is ID
-   */
-
-div {
+  color:green;
 }
