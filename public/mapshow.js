@@ -91,7 +91,8 @@ function codeAddress(newaddress, times) {
      });
      markers.push(marker);
    } else {
-     alert('Geocode was not successful for the following reason: ' + status);
+     // do nothing
+//     alert('Geocode was not successful for the following reason: ' + status);
    }
  });
 }
