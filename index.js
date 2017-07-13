@@ -158,6 +158,24 @@ if(!err) {
 }
 });
 
+// Query to get the first 15 tweets for a particular trendid
+function gettweetsfortrend(con, trendid, cb)
+{
+    var json = '';
+    con.query('select trend_id, id_str, convert(created_at, char) as twdate, text,  place from tweets '+
+              'where trend_id = '+trendid+' and place is not null '+
+              'order by id_str desc limit 15;',
+           function(err, results, fields) {
+       if (err)
+           return cb(err, null);
+       json = JSON.stringify(results);
+
+//       console.log('JSON-result:', json);
+       cb(null, json);
+  });
+}
+
+
 // query to get places for a particular trend id
 function getplacefortrend(con, trendid, cb)
 {
@@ -189,6 +207,7 @@ function getalltrends(con, cb)
        cb(null, json);
   });
 }
+
 
 //query to insert a trend, it will return a trendid. If already exists, will return trend id on table.
 function instrend(con, newtrend, cb)
@@ -413,6 +432,15 @@ app.get("/",function (req,res)
          getplacefortrend(connection, trendid, function(err, address) {
                if (err) return console.error(err);
                socket.emit('place', address);
+         });
+       });
+
+       // for a certian trend id, get tweets of that trend
+       socket.on('gettweets', function (trendid) {
+         console.log('Searching for tweets of trendid: '+trendid);
+         gettweetsfortrend(connection, trendid, function(err, tweetinfo) {
+               if (err) return console.error(err);
+               socket.emit('gettweets', tweetinfo);
          });
        });
 

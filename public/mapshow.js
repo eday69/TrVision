@@ -36,6 +36,39 @@ window.onload = function() {
           }
         });
 
+        socket.on('gettweets', function(tweetinfo) {
+          var divtweet = document.getElementById("overlay");
+          var thetweetinfo = JSON.parse(tweetinfo);
+          if(thetweetinfo.length) {
+            var html = '';
+            var trid;
+            var twcount=0;
+            thetweetinfo.forEach(function(twinfo){
+              ++twcount;
+              trid = twinfo.trend_id;
+              html += "<div id='twtable' onclick='closetweettable();'>";
+              html += "<div class='row'>";
+              html += "<div class='celltext'>"+twcount+") Tw: "+twinfo.text;
+              html += "</div><div class='cellplace'>"+twinfo.place;
+              html += "</div><div class='celldate'>"+twinfo.twdate+"</div>";
+              html += "</div>";
+              html += "</div>";
+            });
+            console.log('trid: '+trid);
+            var thetr = document.getElementById(trid);
+            var thetrTextRectangle = thetr.getBoundingClientRect();
+
+            console.log("logo's left pos.:", thetrTextRectangle.left);
+            console.log("logo's top pos.:", thetrTextRectangle.top);
+            divtweet.style.top=thetrTextRectangle.top+16;
+            divtweet.innerHTML = html;
+          }
+          else {
+            divtweet.innerHTML='No tweets (with place) for this trendid !!';
+          }
+          divtweet.style.display = "block";
+        });
+
 
         var trendlist = document.getElementById("trendlist");
         socket.on('alltrends', function(trends) {
@@ -45,7 +78,7 @@ window.onload = function() {
 //            console.log(place.place);
             html = "<div>";
             html += "<div class='trendday'>("+trend.thours+" hours)  ["+trend.tdays+" days age]</div>";
-            html += "<a href='#' onclick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>" + trend.name + "</a>";
+            html += "<a id='"+trend.idtrends +"' href='#' onClick='mapidtrend("+trend.idtrends +");' class='trendsinfo'>" + trend.name + "</a>";
             html += "</div>"
             trendlist.insertAdjacentHTML('beforeend', html);
           });
@@ -53,10 +86,19 @@ window.onload = function() {
 
 }
 
+function closetweettable() {
+  var divtweet = document.getElementById("overlay");
+  divtweet.innerHTML = "";
+  divtweet.style.display = "none";
+};
+
 function mapidtrend(idtrends) {
+  var tridtw = event.srcElement;
    deleteMarkers();
    console.log('Cleaned all markers');
    socket.emit('place', idtrends);
+   socket.emit('gettweets', idtrends);
+   console.log('got em suckers');
 };
 
 // Sets the map on all markers in the array.

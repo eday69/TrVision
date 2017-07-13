@@ -1,4 +1,8 @@
-
+body {
+     height:100%;
+     margin:0;
+     padding:0;
+}
 .trends {
   float: left;
   width: 20%;
@@ -13,8 +17,94 @@
   height : 80%;
   overflow: auto;
 }
+
+#overlay {
+  border: 1px solid black;
+  padding:3px%;
+  position:absolute;
+  width:65%;
+  left:40px;
+  z-index:3;
+  display: none;
+
+}
+#twtable {
+  display:table;
+  width:100%;
+/*  background-color: #fff; */
+  /* black for browsers which cannot support rgba */
+  background-color: #000;
+
+  /* 70% opacity for supported browsers */
+  background-color: rgba(0, 0, 0, 0.7);
+
+  /* IE 5.5+ support #BB000000 is ~70% opacity on black */
+  filter:progid:DXImageTransform.Microsoft.gradient(
+    startColorstr=#BB000000, endColorstr=#BB000000
+  );
+
+  /* IE 8 support */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(
+    startColorstr=#BB000000, endColorstr=#BB000000
+  )";
+/*  float:none; */
+}
+
+.row {
+  display:table-row;
+  width:100%;
+}
+
+.celltext{
+  display:table-cell;
+  text-align:left;
+  font-size: x-small;
+  width:74%;
+  color:white;
+  text-overflow: ellipsis;
+}
+.cellplace{
+  display:table-cell;
+  text-align:left;
+  font-size: x-small;
+  width:13%;
+  color:white;
+  text-overflow: ellipsis;
+}
+.celldate{
+  display:table-cell;
+  text-align:left;
+  font-size: x-small;
+  width:12%;
+  color:white;
+  text-overflow: ellipsis;
+}
+
+.twdetail {
+  float:left;
+}
+
+/*
 a:hover {
+padding:15px;
   color: red;
+}
+a.link.active { color:blue; }
+*/
+a:link{
+  color:blue;
+}
+a:visited{
+  color:black;
+}
+a:hover{
+  color:orange;
+}
+a:focus{
+  color:green;
+}
+a:active{
+  color:red;
 }
 .map {
   float: left;
